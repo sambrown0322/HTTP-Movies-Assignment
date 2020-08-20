@@ -8,6 +8,7 @@ const initialItem = {
   director: "",
   metascore: "",
   stars: [],
+  starsInput: "",
 };
 
 export default function UpdateMovie(props) {
@@ -46,6 +47,21 @@ export default function UpdateMovie(props) {
       })
       .catch((err) => console.log(err));
   };
+  const addStars = (e) => {
+    e.preventDefault();
+    setItem({
+      ...item,
+      stars: [...item.stars, item.starsInput],
+      starsInput: "",
+    });
+  };
+  const deleteStar = (e) => {
+    e.preventDefault();
+    setItem({
+      ...item,
+      stars: item.stars.filter((star) => star !== e.target.id),
+    });
+  };
   return (
     <div>
       <h2>Update Movie:</h2>
@@ -74,13 +90,25 @@ export default function UpdateMovie(props) {
           placeholder="Metascore"
         />
         <br />
-        {/* <input
+        <input
           type="text"
-          name="title"
-          value={item.title}
+          name="starsInput"
+          value={item.starsInput}
           onChange={handleChange}
-          placeholder="Title"
-        /> */}
+          placeholder="Stars"
+        />
+        <button onClick={addStars}>Add a Star</button>
+        {item.stars.map((star) => {
+          return (
+            <div>
+              <span>{star}</span>
+              <button id={star} onClick={deleteStar}>
+                X
+              </button>
+            </div>
+          );
+        })}
+        <br />
         <button>Save changes</button>
       </form>
     </div>
